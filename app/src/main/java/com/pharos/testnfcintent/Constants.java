@@ -37,6 +37,7 @@ public class Constants {
     // Types
     public static String IMAGE = "IMAGE";
     public static String TEXT = "TEXT";
+    public static String QR = "QR";
 }
 
 
