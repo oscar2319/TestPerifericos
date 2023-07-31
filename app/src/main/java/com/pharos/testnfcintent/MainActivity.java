@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
                 writeToFile(profileDir, "qr", encodedImage);
 
+                //CON FONT_BIG = 24 CARACTERES POR LINEA
+                //CON FONT_NORMAL = 32 CARACTERES POR LINEA
+                //CON FONT_IOU = 48 CARACTERES POR LINEA
 
 
 
