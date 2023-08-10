@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putStringArrayListExtra(Intent.EXTRA_STREAM, valuesToSend);
 
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
-                startActivityForResult(intent, 60000);
+                startActivityForResult(intent,50000);
 
             }
         });
@@ -190,30 +190,41 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // check that it is the SecondActivity with an OK result
-        if (requestCode == 60000) {
-            if (resultCode == 60000) { // Activity.RESULT_OK
+        if (requestCode == 60000 && resultCode == 60000) {
+        // Activity.RESULT_OK
 
-                // get String data from Intent
-                String returnString = data.getStringExtra("NFC_READ_TAG");
-
-
-                TextView text = findViewById(R.id.textView);
-                text.setText(returnString);
-                Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        } else if(requestCode == 60001) {
-            if (resultCode == 80000) { // Activity.RESULT_OK
-
-                // get String data from Intent
-                String returnString = data.getStringExtra("SCANNER");
+            // get String data from Intent
+            String returnString = data.getStringExtra("NFC_READ_TAG");
 
 
-                TextView text = findViewById(R.id.textView);
-                text.setText(returnString);
-                Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+            TextView text = findViewById(R.id.textView);
+            text.setText(returnString);
+            Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+        } else if(requestCode == 60001 && resultCode == 80000) {
+        // Activity.RESULT_OK
+
+            // get String data from Intent
+            String returnString = data.getStringExtra("SCANNER");
+
+
+            TextView text = findViewById(R.id.textView);
+            text.setText(returnString);
+            Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
+        } else if(requestCode == 50000 && resultCode == 50010){
+            // Activity.RESULT_OK
+
+            // get String data from Intent
+            String returnString = data.getStringExtra("PRINTER");
+
+            TextView text = findViewById(R.id.textView);
+            text.setText(returnString);
+            Snackbar.make( mView,returnString,Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
         }
     }
 }
