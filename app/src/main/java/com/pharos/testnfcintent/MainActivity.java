@@ -3,7 +3,11 @@ package com.pharos.testnfcintent;
 import static com.pharos.testnfcintent.Constants.*;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,13 +15,23 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import android.os.Environment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +67,22 @@ public class MainActivity extends AppCompatActivity {
                 String text = "Prueba para imprimir";
                 String myAppPackageName = "com.pharos.testnfcintent";
 
+                Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                        R.drawable.qr1675805453449);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                String dirName = "images";
+                File profileDir = makeAndGetProfileDirectory(dirName);
+
+                writeToFile(profileDir, "qr", encodedImage);
+
+                //CON FONT_BIG = 24 CARACTERES POR LINEA
+                //CON FONT_NORMAL = 32 CARACTERES POR LINEA
+                //CON FONT_IOU = 48 CARACTERES POR LINEA
+
+
 
                 // Listado de imágenes y líneas a enviar
                 ArrayList<String> valuesToSend = new ArrayList<>();
@@ -64,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                valuesToSend.add(QR + ","  + FONT_NORMAL + "," + ALIGN_CENTER);
 
                 intent.setPackage(CREDIBANCO_PACKAGE);
                 intent.setAction(Intent.ACTION_SEND_MULTIPLE);
@@ -101,6 +132,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void writeToFile(File directory, String file, String data){
+
+        File qrFile = new File(directory,file);
+        FileOutputStream fileOutput = null;
+        OutputStreamWriter outputStreamWriter = null;
+
+        try {
+            fileOutput = new FileOutputStream(qrFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            outputStreamWriter = new OutputStreamWriter(fileOutput);
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -121,6 +172,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    File makeAndGetProfileDirectory(String dirName) {
+        // determine the profile directory
+        File profileDirectory;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            profileDirectory = new File(Environment.getStorageDirectory(), dirName);
+        }else {
+            profileDirectory = new File(Environment.getExternalStorageDirectory(), dirName);
+        }
+
+        // creates the directory if not present yet
+        profileDirectory.mkdir();
+
+        return profileDirectory;
     }
 
     @Override
