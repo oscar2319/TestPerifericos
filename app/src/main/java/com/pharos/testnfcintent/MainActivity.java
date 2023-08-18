@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mView = view;
                 Intent intent = new Intent(Intent.ACTION_MAIN);
+
+                intent.putExtra(UID, true);
+
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
                 startActivityForResult(intent, 60000);
 
@@ -61,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 mView = view;
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 String imageName = "logo";
