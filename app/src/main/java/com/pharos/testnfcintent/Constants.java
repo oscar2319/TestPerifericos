@@ -6,7 +6,6 @@ public class Constants {
     public static String LETTER_SPACING = "LETTER_SPACING";
     public static String GRAY_LEVEL = "GRAY_LEVEL";
     public static String PACKAGE_NAME = "PACKAGE_NAME";
-    public static String UID = "UID";
 
     // Typefaces
     public static String TYPEFACE_DEFAULT = "TYPEFACE_DEFAULT";
@@ -39,7 +38,8 @@ public class Constants {
     public static String IMAGE = "IMAGE";
     public static String TEXT = "TEXT";
     public static String QR = "QR";
+
+    //Uid
+
+    public static String UID = "UID";
 }
-
-
-
