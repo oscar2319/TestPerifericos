@@ -24,7 +24,9 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,16 +46,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        boolean[] isUIDtrue = {true};
+
         FloatingActionButton fab = findViewById(R.id.fab);
         FloatingActionButton fab2 = findViewById(R.id.fab2);
         FloatingActionButton fab3 = findViewById(R.id.fab3);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mView = view;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
+        Switch uidSwitch = findViewById(R.id.uidSwitch);
 
-                intent.putExtra(UID, true);
+        fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mView = view;
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+
+                        intent.putExtra(UID, isUIDtrue[0]);
 
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
                 startActivityForResult(intent, 60000);
@@ -131,6 +137,17 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ScannerConstants.SCANTIP, "Scan tip");
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
                 startActivityForResult(intent, 60001);
+
+            }
+        });
+
+        uidSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isUIDtrue[0] = !isUIDtrue[0];
+
+                String message = "Entrada de uid :  " + isUIDtrue[0];
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
 
             }
         });
