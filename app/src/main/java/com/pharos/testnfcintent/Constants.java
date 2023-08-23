@@ -38,7 +38,8 @@ public class Constants {
     public static String IMAGE = "IMAGE";
     public static String TEXT = "TEXT";
     public static String QR = "QR";
+
+    //Uid
+
+    public static String UID = "UID";
 }
-
-
-
