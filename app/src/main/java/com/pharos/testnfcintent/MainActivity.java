@@ -39,6 +39,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     View mView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
         Switch uidSwitch = findViewById(R.id.uidSwitch);
 
         fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mView = view;
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
+            @Override
+            public void onClick(View view) {
+                mView = view;
+                Intent intent = new Intent(Intent.ACTION_MAIN);
 
-                        intent.putExtra(UID, isUIDtrue[0]);
+                intent.putExtra(UID, isUIDtrue[0]);
 
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
+                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
                 startActivityForResult(intent, 60000);
 
             }
@@ -93,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 //CON FONT_IOU = 48 CARACTERES POR LINEA
 
 
-
                 // Listado de imágenes y líneas a enviar
                 ArrayList<String> valuesToSend = new ArrayList<>();
                 valuesToSend.add(IMAGE + "," + imageName + "," + ALIGN_RIGHT);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                 valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(QR + ","  + FONT_NORMAL + "," + ALIGN_CENTER);
+                valuesToSend.add(QR + "," + FONT_NORMAL + "," + ALIGN_CENTER);
 
                 intent.setPackage(CREDIBANCO_PACKAGE);
                 intent.setAction(Intent.ACTION_SEND_MULTIPLE);
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(PACKAGE_NAME, myAppPackageName);
                 intent.putStringArrayListExtra(Intent.EXTRA_STREAM, valuesToSend);
 
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
+                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
                 startActivityForResult(intent, 60000);
 
             }
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ScannerConstants.TITLESIZE, 10);
                 intent.putExtra(ScannerConstants.TIPSIZE, 10);
                 intent.putExtra(ScannerConstants.SCANTIP, "Scan tip");
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals","com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
+                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
                 startActivityForResult(intent, 60001);
 
             }
@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void writeToFile(File directory, String file, String data){
+    private void writeToFile(File directory, String file, String data) {
 
-        File qrFile = new File(directory,file);
+        File qrFile = new File(directory, file);
         FileOutputStream fileOutput = null;
         OutputStreamWriter outputStreamWriter = null;
 
@@ -194,12 +194,13 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     File makeAndGetProfileDirectory(String dirName) {
         // determine the profile directory
         File profileDirectory;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             profileDirectory = new File(Environment.getStorageDirectory(), dirName);
-        }else {
+        } else {
             profileDirectory = new File(Environment.getExternalStorageDirectory(), dirName);
         }
 
@@ -223,10 +224,10 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView text = findViewById(R.id.textView);
                 text.setText(returnString);
-                Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
+                Snackbar.make(mView, returnString, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        } else if(requestCode == 60001) {
+        } else if (requestCode == 60001) {
             if (resultCode == 80000) { // Activity.RESULT_OK
 
                 // get String data from Intent
@@ -235,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView text = findViewById(R.id.textView);
                 text.setText(returnString);
-                Snackbar.make( mView,returnString, Snackbar.LENGTH_LONG)
+                Snackbar.make(mView, returnString, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         }
