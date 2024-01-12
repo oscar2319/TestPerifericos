@@ -60,4 +60,22 @@
         android:text="TextView"
         android:layout_gravity="center"
         />
+
+    <TextView
+        android:id="@+id/hash_number_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:text="Hash Code"/>
+
+    <EditText
+        android:id="@+id/hash_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="100dp"
+        android:text="Apwhu=*"
+        android:hint="Hash Code"
+        android:inputType="text"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

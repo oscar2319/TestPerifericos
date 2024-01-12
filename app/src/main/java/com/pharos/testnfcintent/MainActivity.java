@@ -1,32 +1,41 @@
 package com.pharos.testnfcintent;
 
-import static com.pharos.testnfcintent.Constants.*;
+import static com.pharos.testnfcintent.Constants.ALIGN_CENTER;
+import static com.pharos.testnfcintent.Constants.ALIGN_RIGHT;
+import static com.pharos.testnfcintent.Constants.CREDIBANCO_PACKAGE;
+import static com.pharos.testnfcintent.Constants.FONT_BIG;
+import static com.pharos.testnfcintent.Constants.FONT_NORMAL;
+import static com.pharos.testnfcintent.Constants.GRAY_LEVEL;
+import static com.pharos.testnfcintent.Constants.GRAY_LEVEL_2;
+import static com.pharos.testnfcintent.Constants.IMAGE;
+import static com.pharos.testnfcintent.Constants.LETTER_SPACING;
+import static com.pharos.testnfcintent.Constants.PACKAGE_NAME;
+import static com.pharos.testnfcintent.Constants.QR;
+import static com.pharos.testnfcintent.Constants.TEXT;
+import static com.pharos.testnfcintent.Constants.TYPEFACE;
+import static com.pharos.testnfcintent.Constants.TYPEFACE_DEFAULT;
+import static com.pharos.testnfcintent.Constants.UID;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import android.os.Environment;
 import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,12 +48,14 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     View mView;
+    EditText hashCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        hashCode = findViewById(R.id.hash_code);
         setSupportActionBar(toolbar);
 
         boolean[] isUIDtrue = {true};
@@ -57,87 +68,100 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mView = view;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
+                if(!hashCode.getText().toString().isEmpty()){
+                    mView = view;
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
 
-                intent.putExtra(UID, isUIDtrue[0]);
-
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
-                startActivityForResult(intent, 60000);
-
+                    intent.putExtra(UID, isUIDtrue[0]);
+                    intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
+                    intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
+                    startActivityForResult(intent, 60000);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!hashCode.getText().toString().isEmpty()){
 
-                mView = view;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                String imageName = "logo";
-                String text = "Prueba para imprimir";
-                String myAppPackageName = "com.pharos.testnfcintent";
+                    mView = view;
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    String imageName = "logo";
+                    String text = "Prueba para imprimir";
+                    String myAppPackageName = "com.pharos.testnfcintent";
 
-                Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                        R.drawable.qr1675805453449);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] b = baos.toByteArray();
-                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                String dirName = "images";
-                File profileDir = makeAndGetProfileDirectory(dirName);
+                    Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            R.drawable.qr1675805453449);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+                    String dirName = "images";
+                    File profileDir = makeAndGetProfileDirectory(dirName);
 
-                writeToFile(profileDir, "qr", encodedImage);
+                    writeToFile(profileDir, "qr", encodedImage);
 
-                //CON FONT_BIG = 24 CARACTERES POR LINEA
-                //CON FONT_NORMAL = 32 CARACTERES POR LINEA
-                //CON FONT_IOU = 48 CARACTERES POR LINEA
+                    //CON FONT_BIG = 24 CARACTERES POR LINEA
+                    //CON FONT_NORMAL = 32 CARACTERES POR LINEA
+                    //CON FONT_IOU = 48 CARACTERES POR LINEA
 
 
-                // Listado de imágenes y líneas a enviar
-                ArrayList<String> valuesToSend = new ArrayList<>();
-                valuesToSend.add(IMAGE + "," + imageName + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                valuesToSend.add(QR + "," + FONT_NORMAL + "," + ALIGN_CENTER);
+                    // Listado de imágenes y líneas a enviar
+                    ArrayList<String> valuesToSend = new ArrayList<>();
+                    valuesToSend.add(IMAGE + "," + imageName + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
+                    valuesToSend.add(QR + "," + FONT_NORMAL + "," + ALIGN_CENTER);
 
-                intent.setPackage(CREDIBANCO_PACKAGE);
-                intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                intent.setType("*/*");
-                intent.putExtra(TYPEFACE, TYPEFACE_DEFAULT);
-                intent.putExtra(LETTER_SPACING, 6);
-                intent.putExtra(GRAY_LEVEL, GRAY_LEVEL_2);
-                intent.putExtra(PACKAGE_NAME, myAppPackageName);
-                intent.putStringArrayListExtra(Intent.EXTRA_STREAM, valuesToSend);
+                    intent.setPackage(CREDIBANCO_PACKAGE);
+                    intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+                    intent.setType("*/*");
+                    intent.putExtra(TYPEFACE, TYPEFACE_DEFAULT);
+                    intent.putExtra(LETTER_SPACING, 6);
+                    intent.putExtra(GRAY_LEVEL, GRAY_LEVEL_2);
+                    intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
+                    intent.putExtra(PACKAGE_NAME, myAppPackageName);
+                    intent.putStringArrayListExtra(Intent.EXTRA_STREAM, valuesToSend);
 
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
-                startActivityForResult(intent, 60000);
+                    intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
+                    startActivityForResult(intent, 60000);
 
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mView = view;
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.putExtra(ScannerConstants.SHOWBAR, true);
-                intent.putExtra(ScannerConstants.SHOWBACK, true);
-                intent.putExtra(ScannerConstants.SHOWTITLE, true);
-                intent.putExtra(ScannerConstants.SHOWSWITCH, true);
-                intent.putExtra(ScannerConstants.SHOWMENU, true);
-                intent.putExtra(ScannerConstants.TITLE, "TITULO");
-                intent.putExtra(ScannerConstants.TITLESIZE, 10);
-                intent.putExtra(ScannerConstants.TIPSIZE, 10);
-                intent.putExtra(ScannerConstants.SCANTIP, "Scan tip");
-                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
-                startActivityForResult(intent, 60001);
+                if(!hashCode.getText().toString().isEmpty()){
+                    mView = view;
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.putExtra(ScannerConstants.SHOWBAR, true);
+                    intent.putExtra(ScannerConstants.SHOWBACK, true);
+                    intent.putExtra(ScannerConstants.SHOWTITLE, true);
+                    intent.putExtra(ScannerConstants.SHOWSWITCH, true);
+                    intent.putExtra(ScannerConstants.SHOWMENU, true);
+                    intent.putExtra(ScannerConstants.TITLE, "TITULO");
+                    intent.putExtra(ScannerConstants.TITLESIZE, 10);
+                    intent.putExtra(ScannerConstants.TIPSIZE, 10);
+                    intent.putExtra(ScannerConstants.SCANTIP, "Scan tip");
+                    intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
+                    intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
+                    startActivityForResult(intent, 60001);
 
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
