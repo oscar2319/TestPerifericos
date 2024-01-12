@@ -1,32 +1,40 @@
 package com.pharos.testnfcintent;
 
-import static com.pharos.testnfcintent.Constants.*;
+import static com.pharos.testnfcintent.Constants.ALIGN_CENTER;
+import static com.pharos.testnfcintent.Constants.ALIGN_RIGHT;
+import static com.pharos.testnfcintent.Constants.CREDIBANCO_PACKAGE;
+import static com.pharos.testnfcintent.Constants.FONT_BIG;
+import static com.pharos.testnfcintent.Constants.FONT_NORMAL;
+import static com.pharos.testnfcintent.Constants.GRAY_LEVEL;
+import static com.pharos.testnfcintent.Constants.GRAY_LEVEL_2;
+import static com.pharos.testnfcintent.Constants.IMAGE;
+import static com.pharos.testnfcintent.Constants.LETTER_SPACING;
+import static com.pharos.testnfcintent.Constants.PACKAGE_NAME;
+import static com.pharos.testnfcintent.Constants.QR;
+import static com.pharos.testnfcintent.Constants.TEXT;
+import static com.pharos.testnfcintent.Constants.TYPEFACE;
+import static com.pharos.testnfcintent.Constants.TYPEFACE_DEFAULT;
+import static com.pharos.testnfcintent.Constants.UID;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import android.os.Environment;
 import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -161,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.putExtra(Constants.STATE_BLUETOOTH, isBluetooth[0]);
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalBluetoothActivity"));
-                startActivityForResult(intent, 60000);
+                startActivityForResult(intent, 6000);
 
             }
         });
@@ -254,9 +262,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         } else if (requestCode == 6000) {
-
-            String bluetoothState = data.getStringExtra("BLUETOOTH_ADAPTER_STATUS");
-            Toast.makeText(this, bluetoothState, Toast.LENGTH_SHORT).show();
+            if (resultCode == 6000){
+                String bluetoothState = data.getStringExtra("BLUETOOTH_ADAPTER_STATUS");
+                Toast.makeText(this, bluetoothState, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
