@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.putExtra(Constants.STATE_BLUETOOTH, isBluetooth[0]);
+                intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalBluetoothActivity"));
                 startActivityForResult(intent, 6000);
 
