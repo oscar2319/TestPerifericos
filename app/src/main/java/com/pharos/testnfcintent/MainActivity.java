@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(Constants.STATE_BLUETOOTH, isBluetooth[0]);
                 intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
                 intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalBluetoothActivity"));
-                startActivityForResult(intent, 6000);
+                startActivityForResult(intent, 6010);
 
             }
         });
@@ -278,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(mView, returnString, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        } else if (requestCode == 6000) {
-            if (resultCode == 6000){
+        } else if (requestCode == 6010) {
+            if (resultCode == 6010){
                 String bluetoothState = data.getStringExtra("BLUETOOTH_ADAPTER_STATUS");
                 Toast.makeText(this, bluetoothState, Toast.LENGTH_SHORT).show();
             }
