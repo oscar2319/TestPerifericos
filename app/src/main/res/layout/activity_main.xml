@@ -51,7 +51,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:checked="true"
+        android:text="UID"
         app:layout_anchor="@id/fab"/>
+
+    <Switch
+        android:id="@+id/bluetoothSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:layout_gravity="right"
+        android:text="Bluetooth "
+        app:layout_anchor="@id/fab3" />
 
     <TextView
         android:id="@+id/textView"
@@ -60,4 +70,22 @@
         android:text="TextView"
         android:layout_gravity="center"
         />
+
+    <TextView
+        android:id="@+id/hash_number_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:text="Hash Code"/>
+
+    <EditText
+        android:id="@+id/hash_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="100dp"
+        android:text="Apwhu=*"
+        android:hint="Hash Code"
+        android:inputType="text"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

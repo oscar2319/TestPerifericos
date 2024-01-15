@@ -18,4 +18,5 @@ public class ScannerConstants {
     public static final  String TIPCOLOR = "TIPCOLOR";
     public static final  String TIPSIZE = "TIPSIZE";
     public static final String  PENDANT = "PENDANT";
+    public static final String  HASH_CODE = "HASH_CODE";
 }
