@@ -59,11 +59,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         boolean[] isUIDtrue = {true};
+        boolean[] isBluetooth = {false};
 
         FloatingActionButton fab = findViewById(R.id.fab);
         FloatingActionButton fab2 = findViewById(R.id.fab2);
         FloatingActionButton fab3 = findViewById(R.id.fab3);
         Switch uidSwitch = findViewById(R.id.uidSwitch);
+        Switch BlSwitch = findViewById(R.id.bluetoothSwitch);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +174,19 @@ public class MainActivity extends AppCompatActivity {
 
                 String message = "Entrada de uid :  " + isUIDtrue[0];
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        BlSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isBluetooth[0] = !isBluetooth[0];
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.putExtra(Constants.STATE_BLUETOOTH, isBluetooth[0]);
+                intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
+                intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalBluetoothActivity"));
+                startActivityForResult(intent, 6000);
 
             }
         });
@@ -262,6 +277,11 @@ public class MainActivity extends AppCompatActivity {
                 text.setText(returnString);
                 Snackbar.make(mView, returnString, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        } else if (requestCode == 6000) {
+            if (resultCode == 6010){
+                String bluetoothState = data.getStringExtra("BLUETOOTH_ADAPTER_STATUS");
+                Toast.makeText(this, bluetoothState, Toast.LENGTH_SHORT).show();
             }
         }
     }

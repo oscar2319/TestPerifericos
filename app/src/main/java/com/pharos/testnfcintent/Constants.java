@@ -1,6 +1,9 @@
 package com.pharos.testnfcintent;
 
 public class Constants {
+
+    //Bluetooth
+    public static String STATE_BLUETOOTH = "STATE_BLUETOOTH";
     // Property names
     public static String TYPEFACE = "TYPEFACE";
     public static String LETTER_SPACING = "LETTER_SPACING";
