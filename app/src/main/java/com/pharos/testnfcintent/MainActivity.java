@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hashCode.getText().toString().isEmpty()){
+
                     mView = view;
                     Intent intent = new Intent(Intent.ACTION_MAIN);
 
@@ -78,16 +78,13 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
                     intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
                     startActivityForResult(intent, 60000);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hashCode.getText().toString().isEmpty()){
+
 
                     mView = view;
                     Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -134,18 +131,16 @@ public class MainActivity extends AppCompatActivity {
                     intent.putStringArrayListExtra(Intent.EXTRA_STREAM, valuesToSend);
 
                     intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalPrintingActivity"));
-                    startActivityForResult(intent, 60000);
+                    startActivityForResult(intent, 40001);
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
         fab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hashCode.getText().toString().isEmpty()){
+
                     mView = view;
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.putExtra(ScannerConstants.SHOWBAR, true);
@@ -161,9 +156,6 @@ public class MainActivity extends AppCompatActivity {
                     intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalScannerActivity"));
                     startActivityForResult(intent, 60001);
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Ingrese su Hash Code", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
@@ -282,6 +274,19 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == 6010){
                 String bluetoothState = data.getStringExtra("BLUETOOTH_ADAPTER_STATUS");
                 Toast.makeText(this, bluetoothState, Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (requestCode == 40001) {
+            if (resultCode == 40000) { // Activity.RESULT_OK
+
+                // get String data from Intent
+                String returnString = data.getStringExtra("PRINT_READ_TAG");
+
+
+                TextView text = findViewById(R.id.textView);
+                text.setText(returnString);
+                Snackbar.make(mView, returnString, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         }
     }
