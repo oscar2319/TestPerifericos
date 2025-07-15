@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                     mView = view;
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     String imageName = "logo";
+                    String qrName1 = "qrName1";
+                    String qrName2 = "qrName2";
                     String text = "Prueba para imprimir";
                     String myAppPackageName = "com.pharos.testnfcintent";
 
@@ -104,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
                     String dirName = "images";
                     File profileDir = makeAndGetProfileDirectory(dirName);
 
-                    writeToFile(profileDir, "qr", encodedImage);
+                    writeToFile(profileDir, qrName1, encodedImage);
+                    writeToFile(profileDir, qrName2, encodedImage);
 
                     //CON FONT_BIG = 24 CARACTERES POR LINEA
                     //CON FONT_NORMAL = 32 CARACTERES POR LINEA
@@ -121,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
                     valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                     valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
                     valuesToSend.add(TEXT + "," + text + "," + FONT_BIG + "," + ALIGN_RIGHT);
-                    valuesToSend.add(QR + "," + FONT_NORMAL + "," + ALIGN_CENTER);
+                    valuesToSend.add(QR + ", " + qrName1 + ","  + FONT_NORMAL + "," + ALIGN_CENTER);
+                    valuesToSend.add(QR + ", " + qrName2 + ","  + FONT_NORMAL + "," + ALIGN_CENTER);
 
                     intent.setPackage(CREDIBANCO_PACKAGE);
                     intent.setAction(Intent.ACTION_SEND_MULTIPLE);
