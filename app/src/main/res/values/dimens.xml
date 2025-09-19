@@ -1,3 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Default screen margins, per the Android Design guidelines -->
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="default_logo_size">80dp</dimen>
+    <dimen name="button_default_stroke_width">0dp</dimen>
+    <dimen name="button_icon_padding">26dp</dimen>
+
+    <!-- Default dimens -->
+    <dimen name="dimen_0">0dp</dimen>
+    <dimen name="dimen_1">1dp</dimen>
+    <dimen name="dimen_2">2dp</dimen>
+    <dimen name="dimen_3">3dp</dimen>
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_5">5dp</dimen>
+    <dimen name="dimen_6">6dp</dimen>
+    <dimen name="dimen_7">7dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_9">9dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_11">11dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
+    <dimen name="negative_dimen_14">-14dp</dimen>
+    <dimen name="dimen_13">13dp</dimen>
+    <dimen name="dimen_14">14dp</dimen>
+    <dimen name="dimen_15">15dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_17">17dp</dimen>
+    <dimen name="dimen_18">18dp</dimen>
+    <dimen name="dimen_20">20dp</dimen>
+    <dimen name="dimen_21">21dp</dimen>
+    <dimen name="dimen_22">22dp</dimen>
+    <dimen name="dimen_23">23dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_25">25dp</dimen>
+    <dimen name="dimen_26">26dp</dimen>
+    <dimen name="dimen_27">27dp</dimen>
+    <dimen name="dimen_28">28dp</dimen>
+    <dimen name="dimen_30">30dp</dimen>
+    <dimen name="dimen_31">31dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_33">33dp</dimen>
+    <dimen name="dimen_34">34dp</dimen>
+    <dimen name="dimen_35">35dp</dimen>
+    <dimen name="dimen_37">37dp</dimen>
+    <dimen name="dimen_38">38dp</dimen>
+    <dimen name="dimen_39">39dp</dimen>
+    <dimen name="dimen_40">40dp</dimen>
+
+    <!-- Font sizes -->
+    <dimen name="font_large">24sp</dimen>
+    <dimen name="font_medium_large">20sp</dimen>
+    <dimen name="font_size_21">21sp</dimen>
+    <dimen name="font_size_14">14sp</dimen>
+    <dimen name="font_medium">16sp</dimen>
+    <dimen name="font_size_17">17sp</dimen>
+    <dimen name="font_size_18">18sp</dimen>
+    <dimen name="font_size_19">19sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+
+    <dimen name="font_label_large">16sp</dimen>
+    <dimen name="font_label_small">13sp</dimen>
+    <dimen name="font_label_very_small_alt">12sp</dimen>
+    <dimen name="font_label_very_small">10sp</dimen>
+
+    <dimen name="title_h1">40sp</dimen>
+    <dimen name="title_h2">32sp</dimen>
+    <dimen name="title_h3">24sp</dimen>
+    <dimen name="title_h4">20sp</dimen>
+    <dimen name="title_h5">16sp</dimen>
+    <dimen name="title_h6">13sp</dimen>
+    <dimen name="title_h7">29sp</dimen>
+    <dimen name="error_title">24sp</dimen>
+
+    <dimen name="app_bar_title">18sp</dimen>
+
+    <dimen name="letter_spacing">0</dimen>
+    <dimen name="font_keyboard">22sp</dimen>
+    <dimen name="font_23_sp">23sp</dimen>
+    <dimen name="font_disclaimer">12sp</dimen>
+    <dimen name="font_nav_drawer_item">14sp</dimen>
+    <dimen name="font_result_sell">16sp</dimen>
+    <dimen name="height_input_layout_keyboard">40dp</dimen>
+
+    <!-- Buttons -->
+    <dimen name="button_inset">0dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="button_width">200dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+
+    <!-- Interlines -->
+    <dimen name="interline_space">32dp</dimen>
+    <dimen name="interline_space_normal">20dp</dimen>
+    <dimen name="interline_space_big">24dp</dimen>
+
 </resources>

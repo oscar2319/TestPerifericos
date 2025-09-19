@@ -55,6 +55,42 @@
         app:layout_anchor="@id/fab"/>
 
     <Switch
+        android:id="@+id/authenticateSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:checked="false"
+        android:text="Autenticar " />
+
+    <Switch
+        android:id="@+id/readSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="375dp"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:checked="false"
+        android:text="Leer " />
+
+    <Switch
+        android:id="@+id/writeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:checked="false"
+        android:text="Escribir " />
+
+    <Switch
+        android:id="@+id/encrypthSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="425dp"
+        android:layout_marginStart="@dimen/dimen_10"
+        android:checked="false"
+        android:text="Cifrar " />
+
+    <Switch
         android:id="@+id/bluetoothSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,8 +103,9 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_marginStart="170dp"
         android:text="TextView"
-        android:layout_gravity="center"
         />
 
     <TextView
@@ -76,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:text="Hash Code"/>
 
     <EditText
@@ -84,8 +121,110 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:text="Apwhu=*"
         android:hint="Hash Code"
         android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/block_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:layout_marginStart="20dp"
+        android:visibility="gone"
+        android:text="Numero de bloque" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txt_input_event_block"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:visibility="gone"
+        app:errorIconDrawable="@null"
+        app:hintEnabled="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hash_code"
+        android:maxLength="8"
+        android:singleLine="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen_14"
+            android:padding="@dimen/dimen_10"
+            android:singleLine="true"
+            android:maxLength="8"
+            android:hint="Ingresa el numero de bloque"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/key_type_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Tipo de llave" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/key_type_dropdown_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:layout_marginStart="20dp"
+        android:visibility="gone"
+        android:hint="Tipo de llave"
+        app:endIconMode="dropdown_menu">
+
+        <AutoCompleteTextView
+            android:id="@+id/key_type_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:clickable="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/key_hex_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="290dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Llave" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/txt_input_event_key_hex"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="310dp"
+        app:errorIconDrawable="@null"
+        app:hintEnabled="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:singleLine="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/key_hex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen_14"
+            android:padding="@dimen/dimen_10"
+            android:singleLine="true"
+            android:hint="Ingresa la llave"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
