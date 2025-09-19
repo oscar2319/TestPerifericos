@@ -2,18 +2,22 @@ package com.pharos.testnfcintent;
 
 import static com.pharos.testnfcintent.Constants.ALIGN_CENTER;
 import static com.pharos.testnfcintent.Constants.ALIGN_RIGHT;
+import static com.pharos.testnfcintent.Constants.BLOCK_NFC;
 import static com.pharos.testnfcintent.Constants.CREDIBANCO_PACKAGE;
 import static com.pharos.testnfcintent.Constants.FONT_BIG;
 import static com.pharos.testnfcintent.Constants.FONT_NORMAL;
 import static com.pharos.testnfcintent.Constants.GRAY_LEVEL;
 import static com.pharos.testnfcintent.Constants.GRAY_LEVEL_2;
 import static com.pharos.testnfcintent.Constants.IMAGE;
+import static com.pharos.testnfcintent.Constants.KEY_HEX_NFC;
+import static com.pharos.testnfcintent.Constants.KEY_TYPE_NFC;
 import static com.pharos.testnfcintent.Constants.LETTER_SPACING;
 import static com.pharos.testnfcintent.Constants.PACKAGE_NAME;
 import static com.pharos.testnfcintent.Constants.QR;
 import static com.pharos.testnfcintent.Constants.TEXT;
 import static com.pharos.testnfcintent.Constants.TYPEFACE;
 import static com.pharos.testnfcintent.Constants.TYPEFACE_DEFAULT;
+import static com.pharos.testnfcintent.Constants.TYPE_PROCESS_NFC;
 import static com.pharos.testnfcintent.Constants.UID;
 
 import android.content.ComponentName;
@@ -26,16 +30,21 @@ import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,11 +53,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     View mView;
     EditText hashCode;
+    private boolean updating = false;
+    @Nullable
+    private TypeProcessNFC typeProcess = TypeProcessNFC.DEFAULT;
+
+    private Switch authenticateSwitch, readSwitch, writeSwitch, encrypthSwitch;
+
+    private TextView blockLabel, keyTypeLabel, keyHexLabel;
+    private TextInputLayout blockTil, keyTypeTil, keyHexTil;
+
+    private AutoCompleteTextView keyTypeDropdown;
+    @Nullable private M1KeyTypeEnum selectedKeyType = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +92,112 @@ public class MainActivity extends AppCompatActivity {
         Switch uidSwitch = findViewById(R.id.uidSwitch);
         Switch BlSwitch = findViewById(R.id.bluetoothSwitch);
 
+        authenticateSwitch = findViewById(R.id.authenticateSwitch);
+        readSwitch         = findViewById(R.id.readSwitch);
+        writeSwitch        = findViewById(R.id.writeSwitch);
+        encrypthSwitch     = findViewById(R.id.encrypthSwitch);
+
+        blockLabel = findViewById(R.id.block_label);
+        blockTil   = findViewById(R.id.txt_input_event_block);
+
+        keyTypeLabel = findViewById(R.id.key_type_label);
+        keyTypeTil   = findViewById(R.id.key_type_dropdown_layout);
+
+        keyHexLabel = findViewById(R.id.key_hex_label);
+        keyHexTil   = findViewById(R.id.txt_input_event_key_hex);
+
+        keyTypeDropdown =findViewById(R.id.key_type_dropdown);
+        M1KeyTypeEnum[] keyEnums = M1KeyTypeEnum.values();
+        String[] display = new String[keyEnums.length];
+        for (int i = 0; i < keyEnums.length; i++) display[i] = keyEnums[i].getDisplayName();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, display);
+        keyTypeDropdown.setAdapter(adapter);
+        keyTypeDropdown.setOnItemClickListener((parent, v1, pos, id) -> selectedKeyType = keyEnums[pos]);
+
+        authenticateSwitch.setChecked(false);
+        readSwitch.setChecked(false);
+        writeSwitch.setChecked(false);
+        encrypthSwitch.setChecked(false);
+
+        typeProcess = TypeProcessNFC.DEFAULT;
+        updateInputsFor(TypeProcessNFC.DEFAULT);
+        List<Switch> nfcSwitches = Arrays.asList(authenticateSwitch, readSwitch, writeSwitch, encrypthSwitch);
+        Map<Integer, TypeProcessNFC> id2Type = new HashMap<>();
+        id2Type.put(R.id.authenticateSwitch, TypeProcessNFC.AUTHENTICATE);
+        id2Type.put(R.id.readSwitch,         TypeProcessNFC.READ);
+        id2Type.put(R.id.writeSwitch,        TypeProcessNFC.WRITE);
+        id2Type.put(R.id.encrypthSwitch,     TypeProcessNFC.ENCRYPT);
+
+        CompoundButton.OnCheckedChangeListener exclusive = (btn, checked) -> {
+            if (updating) return;
+
+            if (checked) {
+                updating = true;
+                if (btn != authenticateSwitch) authenticateSwitch.setChecked(false);
+                if (btn != readSwitch)         readSwitch.setChecked(false);
+                if (btn != writeSwitch)        writeSwitch.setChecked(false);
+                if (btn != encrypthSwitch)     encrypthSwitch.setChecked(false);
+                updating = false;
+
+                if (btn.getId() == R.id.authenticateSwitch)      typeProcess = TypeProcessNFC.AUTHENTICATE;
+                else if (btn.getId() == R.id.readSwitch)         typeProcess = TypeProcessNFC.READ;
+                else if (btn.getId() == R.id.writeSwitch)        typeProcess = TypeProcessNFC.WRITE;
+                else if (btn.getId() == R.id.encrypthSwitch)     typeProcess = TypeProcessNFC.ENCRYPT;
+
+            } else {
+                boolean anyOn = authenticateSwitch.isChecked() || readSwitch.isChecked()
+                        || writeSwitch.isChecked() || encrypthSwitch.isChecked();
+                if (!anyOn) typeProcess = TypeProcessNFC.DEFAULT;
+            }
+
+            updateInputsFor(typeProcess);
+        };
+        for (Switch s : nfcSwitches) s.setOnCheckedChangeListener(exclusive);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!hashCode.getText().toString().isEmpty()){
+                    String blockStr = "";
+                    if (blockTil.getEditText() != null) {
+                        blockStr = blockTil.getEditText().getText().toString().trim();
+                    }
+
+                    String keyHexStr = "";
+                    if (keyHexTil.getEditText() != null) {
+                        keyHexStr = keyHexTil.getEditText().getText().toString().trim();
+                    }
+
+                    String keyTypeStr = (selectedKeyType != null)
+                            ? selectedKeyType.name()
+                            : keyTypeDropdown.getText().toString().trim();
+
                     mView = view;
                     Intent intent = new Intent(Intent.ACTION_MAIN);
+                    switch (typeProcess == null ? TypeProcessNFC.DEFAULT : typeProcess) {
+                        case AUTHENTICATE:
+                            intent.putExtra(BLOCK_NFC, blockStr);
+                            intent.putExtra(KEY_TYPE_NFC, keyTypeStr);
+                            intent.putExtra(KEY_HEX_NFC, keyHexStr);
+                            break;
 
-                    intent.putExtra(UID, isUIDtrue[0]);
+                        case READ:
+                            intent.putExtra(BLOCK_NFC, blockStr);
+                            break;
+
+                        case WRITE:
+                        case ENCRYPT:
+                            intent.putExtra(BLOCK_NFC, blockStr);
+                            intent.putExtra(KEY_HEX_NFC, keyHexStr);
+                            break;
+
+                        case DEFAULT:
+                        default:
+                            intent.putExtra(UID, isUIDtrue[0]);
+                            break;
+                    }
+
+                    intent.putExtra(TYPE_PROCESS_NFC, typeProcess.toString());
                     intent.putExtra(ScannerConstants.HASH_CODE, hashCode.getText().toString());
                     intent.setComponent(new ComponentName("com.credibanco.smartposperipherals", "com.credibanco.smartposperipherals.presentation.activity.ExternalNfcReadActivity"));
                     startActivityForResult(intent, 60000);
@@ -195,6 +318,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void updateInputsFor(@Nullable TypeProcessNFC type) {
+        if (type == TypeProcessNFC.AUTHENTICATE) {
+            show(blockLabel, blockTil, keyTypeLabel, keyTypeTil, keyHexLabel, keyHexTil);
+        } else if (type == TypeProcessNFC.READ) {
+            show(blockLabel, blockTil);
+            hide(keyTypeLabel, keyTypeTil, keyHexLabel, keyHexTil);
+        } else if (type == TypeProcessNFC.WRITE || type == TypeProcessNFC.ENCRYPT) {
+            show(blockLabel, blockTil, keyHexLabel, keyHexTil);
+            hide(keyTypeLabel, keyTypeTil);
+        } else {
+            hide(blockLabel, blockTil, keyTypeLabel, keyTypeTil, keyHexLabel, keyHexTil);
+        }
+    }
+
+    private void show(View... vs) { for (View v : vs) v.setVisibility(View.VISIBLE); }
+    private void hide(View... vs) { for (View v : vs) v.setVisibility(View.GONE); }
 
     private void writeToFile(File directory, String file, String data) {
 

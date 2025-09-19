@@ -45,4 +45,9 @@ public class Constants {
     //Uid
 
     public static String UID = "UID";
+
+    public static String TYPE_PROCESS_NFC = "TYPE_PROCESS_NFC";
+    public static String BLOCK_NFC = "BLOCK_NFC";
+    public static String KEY_TYPE_NFC = "KEY_TYPE_NFC";
+    public static String KEY_HEX_NFC = "KEY_HEX_NFC";
 }
